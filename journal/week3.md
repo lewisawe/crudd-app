@@ -23,8 +23,8 @@ npm i aws-amplify --save
 - Allow cognito to verify
 - use email
 - Required attributes
-  -name 
-  -preffered_username
+  - name 
+  - preffered_username
 - Configure message delivery check send email with cognito
 - Intergrate your app
 - User pool name - cruddur-user-pool
@@ -192,9 +192,9 @@ if (cognitoErrors){
 
 ### return to AWS Cognito console
 
--Create a new user
--enter new username
--enter email address
--set a password according to policies
+- Create a new user
+- enter new username
+- enter email address
+- set a password according to policies
 
 
