@@ -24,7 +24,7 @@ npm i aws-amplify --save
 - use email
 - Required attributes
   -name 
-  -user name
+  -preffered_username
 - Configure message delivery check send email with cognito
 - Intergrate your app
 - User pool name - cruddur-user-pool
@@ -167,17 +167,16 @@ const onsubmit = async (event) => {
   event.preventDefault();
   try {
     Auth.signIn(email, password)
-      .then(user => {
-        localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
-        window.location.href = "/"
-      })
-      .catch(err => { console.log('Error!', err) });
-  } catch (error) {
-    if (error.code == 'UserNotConfirmedException') {
-      window.location.href = "/confirm"
-    }
-    setCognitoErrors(error.message)
-  }
+    .then(user => {
+      localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
+      window.location.href = "/"
+    })
+    .catch(error => { 
+      if (error.code == 'UserNotConfirmedException') {
+        window.location.href = "/confirm"
+      }
+      setErrors(error.message)
+    });
   return false
 }
 
@@ -190,4 +189,12 @@ if (cognitoErrors){
 {errors}
 
 ```
+
+### return to AWS Cognito console
+
+-Create a new user
+-enter new username
+-enter email address
+-set a password according to policies
+
 
