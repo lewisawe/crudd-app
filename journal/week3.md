@@ -58,7 +58,7 @@ Amplify.configure({
     // identityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID, // REQUIRED - Amazon Cognito Identity Pool ID
     region: process.env.REACT_APP_AWS_PROJECT_REGION,           // REQUIRED - Amazon Cognito Region
     userPoolId: process.env.REACT_APP_AWS_USER_POOLS_ID,         // OPTIONAL - Amazon Cognito User Pool ID
-    userPoolWebClientId: process.env.REACT_APP_AWS_USER_POOLS_WEB_CLIENT_ID,   // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+    userPoolWebClientId: process.env.REACT_APP_CLIENT_ID,   // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
   }
 });
 ```
@@ -152,6 +152,42 @@ const signOut = async () => {
 }
 ```
 
+Navigate to the frontend-react-js >> src >> pages >> SigninPage.js
 
+replace line 7 with - the line with cookies
+```
+import { Auth } from 'aws-amplify';
+```
 
+at line 15 - 26 for the onSubmit function
+
+````
+const onsubmit = async (event) => {
+  setErrors('')
+  event.preventDefault();
+  try {
+    Auth.signIn(email, password)
+      .then(user => {
+        localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
+        window.location.href = "/"
+      })
+      .catch(err => { console.log('Error!', err) });
+  } catch (error) {
+    if (error.code == 'UserNotConfirmedException') {
+      window.location.href = "/confirm"
+    }
+    setCognitoErrors(error.message)
+  }
+  return false
+}
+
+let errors;
+if (cognitoErrors){
+  errors = <div className='errors'>{cognitoErrors}</div>;
+}
+
+// just before submit component
+{errors}
+
+```
 
