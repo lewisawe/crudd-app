@@ -6,7 +6,6 @@ Install AWS Amplify in frontend folder, with the following command
 
 ```
 npm i aws-amplify --save
-
 ```
 
 ### Create a Cognito users pool in the AWS Console
@@ -62,7 +61,6 @@ Amplify.configure({
     userPoolWebClientId: process.env.REACT_APP_AWS_USER_POOLS_WEB_CLIENT_ID,   // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
   }
 });
-
 ```
 
 In the docker-compose.yml file add the code at the frontend-react-js enviroment variables
@@ -118,6 +116,42 @@ React.useEffect(()=>{
 }, [])
 
 ```
+
+Navigate to the frontend-react-js >> src >> components >> DesktopNavigation.js
+
+You may clean up the code from line 19 - 31  with this
+
+```
+  let trending;
+  let suggested;
+  let join;
+  if (props.user) {
+    trending = <TrendingSection trendings={trendings} />
+    suggested = <SuggestedUsersSection users={users} />
+  } else {
+    join = <JoinSection />
+  }
+```
+
+Navigate to the frontend-react-js >> src >> components >> ProfielInfo.js
+
+Replace line 6 with: 
+```
+import { Auth } from 'aws-amplify';
+```
+
+replace line 15 - 25 with
+```
+const signOut = async () => {
+  try {
+      await Auth.signOut({ global: true });
+      window.location.href = "/"
+  } catch (error) {
+      console.log('error signing out: ', error);
+  }
+}
+```
+
 
 
 
